@@ -40,7 +40,7 @@ public class UserService {
     public User addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setCreatedDate(LocalDateTime.now());
-        user.setRole("USER");
+        user.setRole("ADMIN");
         user.setIsActive(true);
         return repository.save(user);
     }
