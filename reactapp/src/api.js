@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL for API endpoints
-export const BASE_URL = 'http://localhost:8080';
+export const BASE_URL = 'https://sundaramtravels-production.up.railway.app';
 
 // Create axios instance with default configuration
 const api = axios.create({

@@ -41,7 +41,7 @@ public class SecurityConfig {
         http.cors().and()
             .csrf().disable()
             .authorizeRequests()
-            // ✅ Allow unauthenticated access for Swagger + Auth endpoints
+            // ✅ Allow unauthenticated access for Auth endpoints and Swagger
             .antMatchers(
                 "/api/auth/**",
                 "/v3/api-docs/**",
@@ -49,16 +49,16 @@ public class SecurityConfig {
                 "/swagger-ui.html",
                 "/swagger-resources/**",
                 "/webjars/**",
-                "/api/activities/paged" 
+                "/api/activities/paged"
             ).permitAll()
-            // ✅ Require authentication for all other endpoints
+            // ✅ All other endpoints require authentication
             .anyRequest().authenticated()
             .and()
             .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        // ✅ Add JWT filter before username/password authentication
+        // ✅ Add JWT filter before UsernamePasswordAuthenticationFilter
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -68,10 +68,15 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8081")); // your React app
+        // ✅ Allow both local dev and deployed frontend
+        configuration.setAllowedOrigins(Arrays.asList(
+            "http://localhost:8081", 
+            "https://sundaramtravels-production.up.railway.app"
+        ));
+
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
-        configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(true); // ✅ Important for JWT in headers
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
