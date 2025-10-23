@@ -189,6 +189,27 @@ h1 {
   box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
 }
 
+/* Cards Grid Layout */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Form Containers */
 .form-container, .destination-form, .booking-form, .expense-form, .activity-form {
   margin: 2rem 0;
@@ -726,13 +747,14 @@ h1 {
 .bookings-container {
   margin-top: 1.25rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  width: 100%;
 }
 
-.booking-box {
+.booking-box, .card {
   background: white;
-  padding: 1.25rem;
+  padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   border: 2px solid rgba(59, 130, 246, 0.2);
@@ -827,19 +849,25 @@ h1 {
 .expenses-container {
   margin-top: 1.25rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  width: 100%;
 }
 
-.expense-box {
+.expense-box, .card {
   background: white;
-  padding: 1.25rem;
+  padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   border: 2px solid rgba(236, 72, 153, 0.2);
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .expense-box::before {
@@ -874,6 +902,21 @@ h1 {
   margin: 0.4rem 0;
   font-size: 0.88rem;
   line-height: 1.5;
+}
+
+/* Responsive grid layouts for bookings and expenses */
+@media (max-width: 1200px) {
+  .bookings-container,
+  .expenses-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .bookings-container,
+  .expenses-container {
+    grid-template-columns: 1fr;
+  }
 }
 /* Admin Summary Table */
 .summary-table {
