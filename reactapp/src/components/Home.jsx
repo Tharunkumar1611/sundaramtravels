@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { EmailIcon, PhoneIcon, LocationIcon, FacebookIcon, InstagramIcon, TwitterIcon, BriefcaseIcon, HeartIcon } from './Icons';
+import {
+  EmailIcon,
+  PhoneIcon,
+  LocationIcon,
+  FacebookIcon,
+  InstagramIcon,
+  TwitterIcon,
+  BriefcaseIcon,
+  HeartIcon
+} from './Icons';
 import "../styles/Home.css";
+import photo1 from '../assets/images/photo1.jpg';
+import photo2 from '../assets/images/photo2.jpg';
+import photo3 from '../assets/images/photo3.jpg';
 
 const Home = () => {
+  // Slideshow state
+  const images = [photo1, photo2, photo3];
+  const [currentImage, setCurrentImage] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage(prev => (prev + 1) % images.length);
+    }, 3000); // every 3 seconds
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="home-container">
       {/* Hero Section */}
@@ -15,7 +38,7 @@ const Home = () => {
               <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
               <line x1="12" y1="22.08" x2="12" y2="12"/>
             </svg>
-            <h1 className="brand-name">Sundaram Travel Management </h1>
+            <h1 className="brand-name">Sundaram Travel Management</h1>
           </div>
           <p className="tagline">Your Complete Travel Companion</p>
           <p className="hero-description">
@@ -43,65 +66,89 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Features Section with Image and 3x2 Grid */}
       <section className="features-section">
         <h2 className="section-title">Why Choose Us?</h2>
-        <div className="features-grid">
-          <div className="feature-card">
-            <svg className="feature-icon" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
-              <line x1="8" y1="2" x2="8" y2="18"/>
-              <line x1="16" y1="6" x2="16" y2="22"/>
-            </svg>
-            <h3>Smart Itineraries</h3>
-            <p>Create and manage detailed travel plans with ease. Organize your trips efficiently.</p>
+        <div className="features-layout">
+          {/* Left Image - Slideshow */}
+          <div className="image-section">
+            <img
+              src={images[currentImage]}
+              alt="Beautiful destination"
+              style={{
+                width: '100%',
+                height: 'auto',
+                objectFit: 'cover',
+                borderRadius: '0', // sharp edges
+                paddingBottom: '2cm', // extra 2cm at bottom
+                transition: 'opacity 1s ease-in-out'
+              }}
+            />
           </div>
-          <div className="feature-card">
-            <svg className="feature-icon" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-              <circle cx="12" cy="10" r="3"/>
-            </svg>
-            <h3>Destination Hub</h3>
-            <p>Explore and save your favorite destinations. Add detailed information and coordinates.</p>
-          </div>
-          <div className="feature-card">
-            <svg className="feature-icon" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10"/>
-              <polyline points="12 6 12 12 16 14"/>
-            </svg>
-            <h3>Activity Planner</h3>
-            <p>Plan exciting activities for each destination. Track costs, duration, and ratings.</p>
-          </div>
-          <div className="feature-card">
-            <svg className="feature-icon" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-              <line x1="8" y1="21" x2="16" y2="21"/>
-              <line x1="12" y1="17" x2="12" y2="21"/>
-            </svg>
-            <h3>Booking Manager</h3>
-            <p>Keep all your bookings in one place. Track flights, hotels, and reservations.</p>
-          </div>
-          <div className="feature-card">
-            <svg className="feature-icon" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="12" y1="1" x2="12" y2="23"/>
-              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-            </svg>
-            <h3>Expense Tracker</h3>
-            <p>Monitor your travel budget. Track expenses with detailed categorization.</p>
-          </div>
-          <div className="feature-card">
-            <svg className="feature-icon" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="12" y1="20" x2="12" y2="10"/>
-              <line x1="18" y1="20" x2="18" y2="4"/>
-              <line x1="6" y1="20" x2="6" y2="16"/>
-            </svg>
-            <h3>Analytics & Reports</h3>
-            <p>Get insights into your travel patterns and spending habits with visual reports.</p>
+
+          {/* Right Grid */}
+          <div className="grid-section">
+            <div className="grid-box">
+              <svg className="feature-icon" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
+                <line x1="8" y1="2" x2="8" y2="18"/>
+                <line x1="16" y1="6" x2="16" y2="22"/>
+              </svg>
+              <h3>Smart Itineraries</h3>
+              <p>Create and manage detailed travel plans with ease. Organize your trips efficiently.</p>
+            </div>
+
+            <div className="grid-box">
+              <svg className="feature-icon" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <h3>Destination Hub</h3>
+              <p>Explore and save your favorite destinations. Add detailed information and coordinates.</p>
+            </div>
+
+            <div className="grid-box">
+              <svg className="feature-icon" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              <h3>Activity Planner</h3>
+              <p>Plan exciting activities for each destination. Track costs, duration, and ratings.</p>
+            </div>
+
+            <div className="grid-box">
+              <svg className="feature-icon" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                <line x1="8" y1="21" x2="16" y2="21"/>
+                <line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+              <h3>Booking Manager</h3>
+              <p>Keep all your bookings in one place. Track flights, hotels, and reservations.</p>
+            </div>
+
+            <div className="grid-box">
+              <svg className="feature-icon" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="12" y1="1" x2="12" y2="23"/>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+              <h3>Expense Tracker</h3>
+              <p>Monitor your travel budget. Track expenses with detailed categorization.</p>
+            </div>
+
+            <div className="grid-box">
+              <svg className="feature-icon" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="12" y1="20" x2="12" y2="10"/>
+                <line x1="18" y1="20" x2="18" y2="4"/>
+                <line x1="6" y1="20" x2="6" y2="16"/>
+              </svg>
+              <h3>Analytics & Reports</h3>
+              <p>Get insights into your travel patterns and spending habits with visual reports.</p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* How It Works */}
+      {/* How It Works Section */}
       <section className="how-it-works">
         <h2 className="section-title">How It Works</h2>
         <div className="steps-container">
@@ -176,7 +223,6 @@ const Home = () => {
               <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-icon"><InstagramIcon size={18} /> Instagram</a>
               <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-icon"><TwitterIcon size={18} /> Twitter</a>
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-icon"><BriefcaseIcon size={18} /> LinkedIn</a>
-
             </div>
           </div>
         </div>

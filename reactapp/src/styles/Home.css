@@ -175,6 +175,47 @@
   background: white;
 }
 
+.features-layout {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 3rem;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.features-image {
+  flex: 1;
+  min-width: 320px;
+  max-width: 450px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* .features-image img {
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  object-fit: cover;
+} */
+.features-image img {
+  width: 100%;
+  height: auto;
+  min-height: calc(100% + 2cm); /* extra length at bottom */
+  border-radius: 0; /* sharp edges */
+  transition: opacity 0.5s ease-in-out;
+}
+
+.features-grid {
+  flex: 2;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+
 .section-title {
   font-size: 3rem;
   text-align: center;
@@ -502,4 +543,74 @@
     width: 100%;
     flex-direction: column;
   }
+}
+.features-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.image-section {
+  flex: 1 1 400px;
+  text-align: center;
+}
+
+.image-section img {
+  display: block;
+  width: 100%;
+  height: auto;
+  padding-bottom: 8cm; /* visually adds extra space at bottom */
+  object-fit: cover;   /* ensures the image scales nicely */
+}
+
+
+.grid-section {
+  flex: 2 1 600px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.grid-box {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+.grid-box h3 {
+  margin-top: 10px;
+  font-size: 1.2rem;
+}
+
+.grid-box p {
+  font-size: 0.95rem;
+  margin-top: 8px;
+  color: #555;
+}
+
+@media (max-width: 900px) {
+  .features-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .grid-section {
+    grid-template-columns: 1fr;
+  }
+}
+.slideshow-image {
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+}
+
+.fade-in {
+  opacity: 1;
+}
+
+.fade-out {
+  opacity: 0;
 }
