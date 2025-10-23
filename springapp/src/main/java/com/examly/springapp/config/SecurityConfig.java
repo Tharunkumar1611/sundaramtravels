@@ -71,7 +71,7 @@ public class SecurityConfig {
         // ✅ Allow both local dev and deployed frontend
         configuration.setAllowedOrigins(Arrays.asList(
             "http://localhost:8081", 
-            "https://sundaramtravels-production.up.railway.app"
+            "https://sundaramtravels-1611.web.app"
         ));
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
