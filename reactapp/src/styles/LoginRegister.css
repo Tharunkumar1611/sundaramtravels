@@ -1,0 +1,247 @@
+/* Sundaram Travel Management - Login/Register */
+
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(30, 58, 138, 0.95) 0%, rgba(59, 130, 246, 0.95) 100%);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  z-index: 1000;
+  padding: 1rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.dialog-box {
+  background: white;
+  padding: 3rem 2.5rem;
+  border-radius: 25px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 10px 30px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dialog-box h2 {
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 2rem;
+  font-weight: 800;
+  font-family: 'Playfair Display', serif;
+  letter-spacing: 0.5px;
+}
+
+.dialog-box form {
+  text-align: left;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  display: block;
+  width: 100%;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 15px;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+  background: #f9fafb;
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+  color: #9ca3af;
+  font-size: 0.95rem;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  background: white;
+  transform: translateY(-2px);
+}
+
+.btn.submit-btn {
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  color: white;
+  font-weight: 700;
+  border: none;
+  border-radius: 50px;
+  padding: 1rem 0;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1.1rem;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  margin-top: 1rem;
+  box-shadow: 0 8px 20px rgba(30, 58, 138, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn.submit-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: left 0.5s ease;
+}
+
+.btn.submit-btn:hover::before {
+  left: 100%;
+}
+
+.btn.submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(30, 58, 138, 0.4);
+}
+
+.btn.submit-btn:active {
+  transform: translateY(-1px);
+}
+
+/* Dialog Icon */
+.dialog-icon {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border: 4px solid #f9fafb;
+}
+
+.dialog-icon svg {
+  color: #3b82f6;
+  width: 40px;
+  height: 40px;
+}
+
+/* Helper Text */
+.helper-text {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.helper-text a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.helper-text a:hover {
+  color: #1e3a8a;
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dialog-box {
+    padding: 2.5rem 2rem;
+    border-radius: 20px;
+    max-width: 95%;
+    width: 95%;
+  }
+
+  .dialog-box h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    padding: 0.875rem 1rem;
+    font-size: 16px; /* Prevents iOS zoom */
+  }
+
+  .btn.submit-btn {
+    font-size: 1rem;
+    padding: 0.875rem 0;
+    min-height: 44px; /* Touch-friendly */
+  }
+
+  .toggle-text {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dialog-overlay {
+    padding: 0.5rem;
+  }
+
+  .dialog-box {
+    padding: 2rem 1.5rem;
+    max-width: 100%;
+    width: 100%;
+    border-radius: 15px;
+  }
+
+  .dialog-box h2 {
+    font-size: 1.5rem;
+  }
+
+  .dialog-icon {
+    width: 70px;
+    height: 70px;
+    top: -25px;
+  }
+  
+  .dialog-icon svg {
+    width: 50px;
+    height: 50px;
+  }
+}
