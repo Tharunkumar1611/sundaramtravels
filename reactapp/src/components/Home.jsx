@@ -25,7 +25,7 @@ const Home = () => {
       setCurrentImage(prev => (prev + 1) % images.length);
     }, 3000); // every 3 seconds
     return () => clearInterval(interval);
-  }, []);
+  }, [images.length]); // Added images.length as dependency
 
   return (
     <div className="home-container">
