@@ -62,9 +62,16 @@ public class UserService {
             if (newUser.getPassword() != null && !newUser.getPassword().isEmpty()) {
                 user.setPassword(passwordEncoder.encode(newUser.getPassword()));
             }
-            user.setRole(newUser.getRole());
-            user.setLastLogin(newUser.getLastLogin());
-            user.setIsActive(newUser.getIsActive());
+            // Only update role if it's provided in the request
+            if (newUser.getRole() != null && !newUser.getRole().isEmpty()) {
+                user.setRole(newUser.getRole());
+            }
+            if (newUser.getLastLogin() != null) {
+                user.setLastLogin(newUser.getLastLogin());
+            }
+            if (newUser.getIsActive() != null) {
+                user.setIsActive(newUser.getIsActive());
+            }
 
             // Update additional profile fields
             if (newUser.getPhone() != null)
