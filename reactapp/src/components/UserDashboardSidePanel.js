@@ -82,7 +82,8 @@ const UserDashboard = () => {
     eventLocation: "",
     description: "",
     status: "PENDING",
-    comment: ""
+    comment: "",
+    tripCompleted: false
   });
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -200,7 +201,15 @@ const UserDashboard = () => {
   const fetchItineraries = () => {
     axios
       .get(`${BASE_URL}${API_ENDPOINTS.ITINERARY}`, config)
-      .then(res => setItineraries(res.data))
+      .then(res => {
+        // Merge with localStorage tripCompleted status
+        const completedStatus = JSON.parse(localStorage.getItem('tripCompletedStatus') || '{}');
+        const mergedData = res.data.map(itin => ({
+          ...itin,
+          tripCompleted: completedStatus[itin.id] || false
+        }));
+        setItineraries(mergedData);
+      })
       .catch(err => console.error(err));
   };
 
@@ -236,7 +245,8 @@ const UserDashboard = () => {
           eventLocation: "",
           description: "",
           status: "PENDING",
-          comment: ""
+          comment: "",
+          tripCompleted: false
         });
         setShowForm(false);
       })
@@ -269,7 +279,8 @@ const UserDashboard = () => {
           eventLocation: "",
           description: "",
           status: "PENDING",
-          comment: ""
+          comment: "",
+          tripCompleted: false
         });
         setShowForm(false);
       })
@@ -285,8 +296,28 @@ const UserDashboard = () => {
   const handleDelete = id => {
     axios
       .delete(`${BASE_URL}${API_ENDPOINTS.ITINERARY_BY_ID(id)}`, config)
-      .then(() => fetchItineraries())
+      .then(() => {
+        // Remove from localStorage as well
+        const completedStatus = JSON.parse(localStorage.getItem('tripCompletedStatus') || '{}');
+        delete completedStatus[id];
+        localStorage.setItem('tripCompletedStatus', JSON.stringify(completedStatus));
+        fetchItineraries();
+      })
       .catch(err => console.error(err));
+  };
+
+  // Toggle trip completion status
+  const toggleTripCompleted = (id, currentStatus) => {
+    const completedStatus = JSON.parse(localStorage.getItem('tripCompletedStatus') || '{}');
+    completedStatus[id] = !currentStatus;
+    localStorage.setItem('tripCompletedStatus', JSON.stringify(completedStatus));
+    
+    // Update state
+    setItineraries(prevItineraries => 
+      prevItineraries.map(itin => 
+        itin.id === id ? { ...itin, tripCompleted: !currentStatus } : itin
+      )
+    );
   };
 
   const handleLogout = () => {
@@ -1008,7 +1039,8 @@ const UserDashboard = () => {
                             eventLocation: "",
                             description: "",
                             status: "PENDING",
-                            comment: ""
+                            comment: "",
+                            tripCompleted: false
                           });
                         }}>
                           Cancel
@@ -1033,6 +1065,42 @@ const UserDashboard = () => {
                         <p><strong>Location:</strong> {item.eventLocation}</p>
                         {item.description && <p><strong>Description:</strong> {item.description}</p>}
                         {item.comment && <p><strong>Comment:</strong> {item.comment}</p>}
+                        <div style={{ 
+                          marginTop: '12px', 
+                          paddingTop: '12px', 
+                          borderTop: '1px solid #e5e7eb',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px'
+                        }}>
+                          <input 
+                            type="checkbox" 
+                            id={`trip-completed-${item.id}`}
+                            checked={item.tripCompleted || false}
+                            onChange={(e) => {
+                              e.stopPropagation();
+                              toggleTripCompleted(item.id, item.tripCompleted);
+                            }}
+                            style={{ 
+                              width: '18px', 
+                              height: '18px',
+                              cursor: 'pointer',
+                              accentColor: '#667eea'
+                            }}
+                          />
+                          <label 
+                            htmlFor={`trip-completed-${item.id}`}
+                            style={{ 
+                              cursor: 'pointer',
+                              userSelect: 'none',
+                              fontWeight: '500',
+                              color: item.tripCompleted ? '#059669' : '#6b7280'
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {item.tripCompleted ? '✓ Trip Completed' : 'Mark as Completed'}
+                          </label>
+                        </div>
                       </div>
                       <div className="card-actions">
                         <button className="btn-edit" onClick={(e) => { e.stopPropagation(); handleEdit(item); }}><EditIcon size={16} /> Edit</button>
@@ -1399,7 +1467,7 @@ const UserDashboard = () => {
                       </div>
                       <div className="card-body">
                         <p><strong>Duration:</strong> {activity.duration}</p>
-                        <p><strong>Cost:</strong> ${activity.cost}</p>
+                        <p><strong>Cost:</strong> {activity.cost}</p>
                         <p><strong>Rating:</strong> {'⭐'.repeat(activity.rating || 0)}</p>
                         <p><strong>Availability:</strong> {activity.availability}</p>
                         <p><strong>Booking Required:</strong> {activity.bookingRequired ? 'Yes' : 'No'}</p>
@@ -1596,7 +1664,7 @@ const UserDashboard = () => {
                         <p><strong>Reference:</strong> {booking.bookingReference}</p>
                         <p><strong>Provider:</strong> {booking.providerName}</p>
                         <p><strong>Date:</strong> {booking.bookingDate}</p>
-                        <p><strong>Cost:</strong> ${booking.cost}</p>
+                        <p><strong>Cost:</strong> {booking.cost}</p>
                       </div>
                       <div className="card-actions">
                         <button className="btn-edit" onClick={() => handleEditBooking(selectedItinerary, booking)}><EditIcon size={16} /> Edit</button>
@@ -2059,11 +2127,14 @@ const UserDashboard = () => {
                           </p>
                         </div>
                         <div className="insight-card">
-                          <h4>✈️ Completion Rate</h4>
+                          <h4>✈️ Trip Completion Rate</h4>
                           <p className="insight-value">
                             {totalItineraries > 0 
-                              ? ((statusCounts['COMPLETED'] || 0) / totalItineraries * 100).toFixed(0)
+                              ? ((itineraries.filter(itin => itin.tripCompleted).length / totalItineraries) * 100).toFixed(0)
                               : 0}%
+                          </p>
+                          <p style={{fontSize: '0.85rem', color: '#ffffff', marginTop: '4px', opacity: '0.9'}}>
+                            {itineraries.filter(itin => itin.tripCompleted).length} of {totalItineraries} trips
                           </p>
                         </div>
                       </div>
